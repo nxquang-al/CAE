@@ -358,10 +358,18 @@ def main(args):
     patch_size = model.encoder.patch_embed.patch_size
     print("=" * 20)
     print("Patch size = %s" % str(patch_size))
-    args.window_size = (
-        args.input_size // patch_size[0],
-        args.input_size // patch_size[1],
-    )
+    if isinstance(args.input_size, int):
+        args.window_size = (
+            args.input_size // patch_size[0],
+            args.input_size // patch_size[1],
+        )
+    elif isinstance(args.input_size, tuple):
+        args.window_size = (
+            args.input_size[0] // patch_size[0],
+            args.input_size[1] // patch_size[1],
+        )
+    else:
+        args.window_size = None
     args.patch_size = patch_size
 
     # get dataset
